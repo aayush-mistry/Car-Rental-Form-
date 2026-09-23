@@ -18,8 +18,9 @@ WORKDIR /app
 COPY . .
 
 # Install System.Data.SQLite.Core and copy to bin/
-RUN nuget install System.Data.SQLite.Core -Version 1.0.118.0 -OutputDirectory packages
-RUN mkdir -p bin && cp packages/System.Data.SQLite.Core.1.0.118.0/lib/net46/System.Data.SQLite.dll bin/
+# Using 1.0.115.5 to avoid a nuget dependency parsing bug in Ubuntu's older nuget package
+RUN nuget install System.Data.SQLite.Core -Version 1.0.115.5 -OutputDirectory packages
+RUN mkdir -p bin && cp packages/System.Data.SQLite.Core.1.0.115.5/lib/net46/System.Data.SQLite.dll bin/
 
 # Initialize SQLite database
 RUN mkdir -p App_Data
