@@ -1,7 +1,15 @@
-FROM mono:latest
+FROM ubuntu:22.04
 
-# Install sqlite3
-RUN apt-get update && apt-get install -y sqlite3 mono-xsp4 nuget && rm -rf /var/lib/apt/lists/*
+# Avoid user interaction during apt installations
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install mono, xsp4, nuget and sqlite3 from Ubuntu repositories
+RUN apt-get update && apt-get install -y \
+    mono-complete \
+    mono-xsp4 \
+    nuget \
+    sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set up application directory
 WORKDIR /app
