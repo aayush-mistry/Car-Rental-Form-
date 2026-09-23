@@ -3,12 +3,13 @@ FROM ubuntu:22.04
 # Avoid user interaction during apt installations
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install mono, xsp4, nuget and sqlite3 from Ubuntu repositories
+# Install mono, xsp4, and sqlite3 from Ubuntu repositories (removed nuget)
 RUN apt-get update && apt-get install -y \
     mono-complete \
     mono-xsp4 \
-    nuget \
     sqlite3 \
+    curl \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up application directory
@@ -17,10 +18,12 @@ WORKDIR /app
 # Copy all source files
 COPY . .
 
-# Install System.Data.SQLite.Core and copy to bin/
-# Using 1.0.115.5 to avoid a nuget dependency parsing bug in Ubuntu's older nuget package
-RUN nuget install System.Data.SQLite.Core -Version 1.0.115.5 -OutputDirectory packages
-RUN mkdir -p bin && cp packages/System.Data.SQLite.Core.1.0.115.5/lib/net46/System.Data.SQLite.dll bin/
+# Download System.Data.SQLite.Core manually to bypass nuget bugs on Ubuntu Mono
+RUN curl -L -o sqlite.zip "https://www.nuget.org/api/v2/package/System.Data.SQLite.Core/1.0.118.0" && \
+    unzip sqlite.zip -d sqlite_pkg && \
+    mkdir -p bin && \
+    cp sqlite_pkg/lib/net46/System.Data.SQLite.dll bin/ && \
+    rm -rf sqlite.zip sqlite_pkg
 
 # Initialize SQLite database
 RUN mkdir -p App_Data
