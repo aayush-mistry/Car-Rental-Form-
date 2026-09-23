@@ -1,0 +1,7 @@
+bin/
+obj/
+packages/
+.git/
+App_Data/
+Database/*.sql
+!Database/CarRental_SQLite.sql

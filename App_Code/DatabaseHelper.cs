@@ -1,6 +1,6 @@
 using System;
 using System.Configuration;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace CarRentalForm
 {
@@ -11,9 +11,9 @@ namespace CarRentalForm
             return ConfigurationManager.ConnectionStrings["StudentPortalConnection"].ConnectionString;
         }
 
-        public static SqlConnection GetConnection()
+        public static SQLiteConnection GetConnection()
         {
-            return new SqlConnection(GetConnectionString());
+            return new SQLiteConnection(GetConnectionString());
         }
     }
 }

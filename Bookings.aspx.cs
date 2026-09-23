@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -18,7 +18,7 @@ namespace CarRentalForm
 
         private void LoadBookings(string searchTerm = "")
         {
-            using (SqlConnection con = DatabaseHelper.GetConnection())
+            using (SQLiteConnection con = DatabaseHelper.GetConnection())
             {
                 string sql = "SELECT * FROM RentalBookings";
                 if (!string.IsNullOrEmpty(searchTerm))
@@ -27,14 +27,14 @@ namespace CarRentalForm
                 }
                 sql += " ORDER BY CreatedAt DESC";
 
-                using (SqlCommand cmd = new SqlCommand(sql, con))
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, con))
                 {
                     if (!string.IsNullOrEmpty(searchTerm))
                     {
                         cmd.Parameters.AddWithValue("@Search", "%" + searchTerm + "%");
                     }
 
-                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    using (SQLiteDataAdapter sda = new SQLiteDataAdapter(cmd))
                     {
                         DataTable dt = new DataTable();
                         sda.Fill(dt);
@@ -60,10 +60,10 @@ namespace CarRentalForm
         {
             int bookingId = Convert.ToInt32(gvBookings.DataKeys[e.RowIndex].Value);
 
-            using (SqlConnection con = DatabaseHelper.GetConnection())
+            using (SQLiteConnection con = DatabaseHelper.GetConnection())
             {
                 string sql = "DELETE FROM RentalBookings WHERE BookingId = @BookingId";
-                using (SqlCommand cmd = new SqlCommand(sql, con))
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, con))
                 {
                     cmd.Parameters.AddWithValue("@BookingId", bookingId);
                     con.Open();

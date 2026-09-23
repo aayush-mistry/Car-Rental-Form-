@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Web.UI;
 
 namespace CarRentalForm
@@ -162,7 +162,7 @@ namespace CarRentalForm
 
                 int bookingId = 0;
 
-                using (SqlConnection con = DatabaseHelper.GetConnection())
+                using (SQLiteConnection con = DatabaseHelper.GetConnection())
                 {
                     string sql = @"
                         INSERT INTO RentalBookings
@@ -179,9 +179,9 @@ namespace CarRentalForm
                             @DrivingType, @Insurance, @GPS, @ChildSeat, @AdditionalDriver, 
                             @AdditionalRequirements, @RentalDays, @DailyRate, @TotalAmount
                         );
-                        SELECT SCOPE_IDENTITY();";
+                        SELECT last_insert_rowid();";
 
-                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    using (SQLiteCommand cmd = new SQLiteCommand(sql, con))
                     {
                         cmd.Parameters.AddWithValue("@FullName", txtFullName.Text.Trim());
                         cmd.Parameters.AddWithValue("@Email", txtEmail.Text.Trim());
