@@ -19,7 +19,7 @@ WORKDIR /app
 COPY . .
 
 # Download System.Data.SQLite.Core manually to bypass nuget bugs on Ubuntu Mono
-RUN curl -L -o sqlite.zip "https://www.nuget.org/api/v2/package/System.Data.SQLite.Core/1.0.118.0" && \
+RUN curl -L -o sqlite.zip "https://www.nuget.org/api/v2/package/Stub.System.Data.SQLite.Core.NetFramework/1.0.118.0" && \
     unzip sqlite.zip -d sqlite_pkg && \
     mkdir -p bin && \
     cp sqlite_pkg/lib/net46/System.Data.SQLite.dll bin/ && \
