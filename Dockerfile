@@ -1,9 +1,16 @@
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 
 # Avoid user interaction during apt installations
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install mono, xsp4, and sqlite3 from Ubuntu repositories (removed nuget)
+# Install dependencies for Mono repository
+RUN apt-get update && apt-get install -y ca-certificates gnupg && rm -rf /var/lib/apt/lists/*
+
+# Add Mono official repository
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+    echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" > /etc/apt/sources.list.d/mono-official-stable.list
+
+# Install mono, xsp4, and sqlite3 from Mono repository and Ubuntu
 RUN apt-get update && apt-get install -y \
     mono-complete \
     mono-xsp4 \
