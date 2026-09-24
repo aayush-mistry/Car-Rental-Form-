@@ -23,7 +23,8 @@ namespace CarRentalForm
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+            // Mono does not support UnobtrusiveValidationMode in code-behind
+            // ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
         }
 
         protected void CalculatePrice_Event(object sender, EventArgs e)
